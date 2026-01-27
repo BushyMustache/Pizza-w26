@@ -3,7 +3,7 @@
 }
 
 body {
-    background-color: red;
+    background-color: darkred;
     margin: 0;
     font-family: 'Segoe UI', Roboto, sans-serif;
 }
@@ -62,4 +62,9 @@ input[type="text"], textarea, select {
     border-radius: .25rem;
     margin-bottom: 1rem;
     padding: .75rem;
+}
+
+.err {
+    color: darkred;
+    display: none;
 }
