@@ -10,6 +10,9 @@ const PORT = 3000;
 // Enable static file serving
 app.use(express.static('public'));
 
+// Set EJS as the view engine
+app.set('view engine', 'ejs');
+
 // "Middleware" that allows express to read
 // form data and store it in req.body
 app.use(express.urlencoded({ extended: true }));
@@ -19,17 +22,17 @@ const orders = [];
 
 // Define our main root ('/')
 app.get('/', (req, res) => {
-    res.sendFile(`${import.meta.dirname}/views/home.html`);
+    res.render('home');
 });
 
 // Contact Route
 app.get('/contact-us', (req, res) => {
-    res.sendFile(`${import.meta.dirname}/views/contact.html`);
+    res.render('contact');
 });
 
 // Confirmation route
 app.get('/thank-you', (req, res) => {
-    res.sendFile(`${import.meta.dirname}/views/confirmation.html`);
+    res.render('confirmation');
 });
 
 // Submit order route
@@ -41,7 +44,7 @@ app.post('/submit-order', (req, res) => {
         lname: req.body.lname,
         email: req.body.email,
         method: req.body.method,
-        toppings: req.body.toppings ? req.body.toppings : "none",
+        toppings: req.body.toppings,
         size: req.body.size,
         comment: req.body.comment ? req.body.comment : "none",
         timestamp: new Date()
@@ -50,12 +53,12 @@ app.post('/submit-order', (req, res) => {
     // Add order object to orders array
     orders.push(order);
     
-    res.sendFile(`${import.meta.dirname}/views/confirmation.html`);
+    res.render('confirmation', { order });
 });
 
 // Admin route
 app.get('/admin', (req, res) => {
-    res.send(orders);
+    res.render('admin', { orders });
 });
 
 // Start server and listen on designative port

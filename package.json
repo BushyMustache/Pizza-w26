@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/BushyMustache/Pizza-w26#readme",
   "dependencies": {
+    "ejs": "^4.0.1",
     "express": "^5.2.1"
   },
   "devDependencies": {
