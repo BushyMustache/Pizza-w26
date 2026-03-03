@@ -1,6 +1,15 @@
 // Import the express module
 import express from 'express';
 
+// Import the mysql2 module
+import mysql2 from 'mysql2';
+
+// Import the dotenv module
+import dotenv from 'dotenv';
+
+// Load environment variables from .env
+dotenv.config();
+
 // Create an express application
 const app = express();
 
@@ -19,6 +28,25 @@ app.use(express.urlencoded({ extended: true }));
 
 // Create a temporary array to store orders
 const orders = [];
+
+// Create a pool (bucket) of database connections
+const pool = mysql2.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT
+}).promise();
+
+// Database test route
+app.get('/db-test', async(req, res) => {
+    try {
+        const pizza_orders = await pool.query('SELECT * FROM orders');
+        res.send(pizza_orders[0]);
+    } catch (err) {
+        console.log('Database error: ', err);
+    }
+});
 
 // Define our main root ('/')
 app.get('/', (req, res) => {
