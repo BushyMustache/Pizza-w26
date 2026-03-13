@@ -7,6 +7,9 @@ import mysql2 from 'mysql2';
 // Import the dotenv module
 import dotenv from 'dotenv';
 
+// Import the validateForm function
+import {validateForm} from './validation.js';
+
 // Load environment variables from .env
 dotenv.config();
 
@@ -64,6 +67,14 @@ app.get('/thank-you', (req, res) => {
 app.post('/submit-order', async (req, res) => {
 
     const order = req.body;
+
+    // Validate the form submission
+    const valid = validateForm(order);
+    if (!valid.isValid) {
+        console.log(valid);
+        res.render('home', {errors: valid.errors});
+        return;
+    }
     
     // Create a JSON object to store the order data
     // (fname, lname, email, size, method, toppings)
